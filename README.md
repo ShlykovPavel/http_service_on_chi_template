@@ -89,7 +89,7 @@ internal/storage/database/migration/
 
 2. Запустите приложение:
    ```bash
-   go run .cmd/auth-JWT-microservice/main.go
+   go run .cmd/http_service_template/main.go
    ```
 
 ## 5. Тестирование

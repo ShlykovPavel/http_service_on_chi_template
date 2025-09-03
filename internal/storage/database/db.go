@@ -108,39 +108,6 @@ func CreatePool(ctx context.Context, config *DbConfig, logger *slog.Logger) (*pg
 	return pool, nil
 }
 
-func CreateTables(poll *pgxpool.Pool, logger *slog.Logger) error {
-	const op = "database/CreateTables"
-	logger = logger.With(
-		slog.String("op", op))
-	//Берём соединение с БД и пула
-	connection, err := poll.Acquire(context.Background())
-	if err != nil {
-		return fmt.Errorf("acquire failed: %w", err)
-	}
-	defer connection.Release()
-
-	query := `
-CREATE TABLE IF NOT EXISTS users (
-    id SERIAL PRIMARY KEY,
-    first_name VARCHAR(64) NOT NULL,
-    last_name VARCHAR(64) NOT NULL,
-    email VARCHAR(256) NOT NULL UNIQUE,
-    password VARCHAR(128) NOT NULL,
-    created_at  TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
-)
-`
-	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
-	defer cancel()
-	_, err = connection.Exec(ctx, query)
-	if err != nil {
-		logger.Error("create table failed", "err", err)
-		return fmt.Errorf("failed to create users table: %w", err)
-	}
-	logger.Info("Users table created successfully")
-	return nil
-}
-
 func MonitorPool(ctx context.Context, pool *pgxpool.Pool, metrics *metrics.Metrics) {
 	go func() {
 		for {

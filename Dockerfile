@@ -7,7 +7,7 @@ COPY . .
 RUN go install github.com/swaggo/swag/cmd/swag@v1.16.6 && \
     swag init -g cmd/auth-JWT-microservice/main.go --output docs --parseDependency --parseInternal
 RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 \
-    go build -ldflags="-w -s" -o auth-JWT-microservice ./cmd/auth-JWT-microservice
+    go build -ldflags="-w -s" -o http_service_template ./cmd/auth-JWT-microservice
 
 # Этап 2: Финальный образ
 FROM alpine:latest AS final

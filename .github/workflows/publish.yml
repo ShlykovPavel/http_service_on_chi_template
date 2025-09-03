@@ -33,7 +33,7 @@ jobs:
       - name: Generate Swagger docs
         run: |
           go install github.com/swaggo/swag/cmd/swag@v1.16.6
-          swag init -g cmd/auth-JWT-microservice/main.go --output docs --parseDependency --parseInternal
+          swag init -g cmd/http_service_template/main.go --output docs --parseDependency --parseInternal
 
       # Шаг 4: Устанавливаем зависимости Go
       - name: Install dependencies
